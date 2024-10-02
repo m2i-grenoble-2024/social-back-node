@@ -7,6 +7,9 @@ import passport from "passport";
 
 export const postController = Router();
 
+const postValidation = Joi.object<Post>({
+    content: Joi.string().required()
+});
 
 postController.get('/', async (req,res) => {
     try {
@@ -15,10 +18,6 @@ postController.get('/', async (req,res) => {
         console.log(e);
         res.status(500).send('Server error');
     }
-});
-
-const postValidation = Joi.object<Post>({
-    content: Joi.string().required()
 });
 
 postController.post('/', passport.authenticate('jwt', {session:false}), async (req,res) => {
