@@ -27,6 +27,7 @@ authController.post('/api/user', async (req,res) => {
         }
         user.role = 'ROLE_USER';
         user.password = await bcrypt.hash(user.password, 5);
+        console.log(user.password );
         await persistUser(user);
         res.status(201).json(user);
 
@@ -42,12 +43,16 @@ authController.post('/api/user', async (req,res) => {
 
 
 authController.post('/api/login', async (req,res) => {
+    console.log(req.body)
     try{
         const credentials =await loginValidation.validateAsync(req.body);
  
         const user = await findUserByIdentifier(credentials.username);
+
         if(user) {
             const samePassword = await bcrypt.compare(req.body.password, user.password);
+            console.log(samePassword);
+            
             if(samePassword) {
                 res.json({
                     user,

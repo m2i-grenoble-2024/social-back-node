@@ -27,3 +27,12 @@ export async function persistPost(post:Post) {
     ]);
     post.id = rows.insertId;
 }
+
+
+export async function deletePost(id:number) {
+    const [rows] = await connection.query<ResultSetHeader>('DELETE FROM post WHERE id=?', [
+        id
+    ]);
+     return rows.affectedRows == 1;
+
+}
